@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>A metamodel for selective laser melting</title>
+  <meta charset="utf-8">
+  <meta name="description" content="A metamodel for selective laser melting">
+  <meta name="author" content="Felipe Lopez">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>A metamodel for selective laser melting</h1>
+    <h2>Quick predictions of melt pool length and width for variable power and speed</h2>
+    <p>Felipe Lopez<br/>Guest Researcher</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Selective laser melting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Additive manufacturing process that creates solid metal parts directly
+from 3D CAD data. The quality of the obtained part is highly related to
+the geometry of the melt pool during the process.</p>
+
+<p><img src="SLMfigure.jpg" alt="width"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>A metamodel approach</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Exploration of the design space is slow and expensive. Not only are the materials
+expensive, but the large number of process parameters results in a large parameter
+space to explore.</p>
+
+<p>As an alternative, we propose a metamodel (model of a model) trained with finite element
+predictions to return quick estimates of melt pool geometry.</p>
+
+<p>The data was gathered from an ABAQUS model developed at NIST for melt pool geometry
+predictions in SLM of Inconel 625.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Gaussian process regression</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The Gaussian Process Regression (GPR) is used to obtain surrogate
+models for melt pool width and length, using laser power and scan speed
+as regressors.</p>
+
+<pre><code class="r">GPRmodel1 &lt;- gausspr(W ~ P+v, data = myTraining, kernel=&quot;rbfdot&quot;)
+GPRmodel2 &lt;- gausspr(L ~ P+v, data = myTraining, kernel=&quot;rbfdot&quot;)
+
+width &lt;- function(Ppred, vpred){
+  width  &lt;- predict(GPRmodel1, data.frame(P = Ppred, v = vpred))
+}
+
+length &lt;- function(Ppred, vpred){
+  length  &lt;- predict(GPRmodel2, data.frame(P = Ppred, v = vpred))
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Metamodeling app</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="app.png" alt="width"></p>
+
+<p>For comments and suggestions, email <a href="mailto:felipelopez@utexas.edu">felipelopez@utexas.edu</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Selective laser melting'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='A metamodel approach'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Gaussian process regression'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Metamodeling app'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
